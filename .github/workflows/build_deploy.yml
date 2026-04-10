@@ -9,11 +9,11 @@ on:
       - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     environment:
       name: testing
-      
+
     env:
       database_hostname: localhost
       database_port: 5432
@@ -53,19 +53,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: false
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/workflow-docs-api:latest
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 🔒 Placeholder for future tests
+      - name: Run tests (placeholder)
+        run: |
+          echo "Tests will be added here (pytest)"
+          # pytest
 
   docker:
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     if: github.ref == 'refs/heads/main'
     environment:
       name: testing
@@ -80,11 +76,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/workflow-docs-api:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/workflow-docs-api:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/workflow-docs-api:buildcache,mode=max
