@@ -17,5 +17,5 @@ app.include_router(auth.router)
 @app.get("/")
 def root():
     return {
-        "message": "hello from Workflow Docs API, and database connection successful"
+        "message": "helloo from Workflow Docs API, and database connection successful"
     }
