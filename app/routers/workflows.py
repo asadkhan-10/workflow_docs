@@ -1,8 +1,11 @@
 # app/routers/workflows.py
+from xxlimited import Str
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from .. import models, schemas, oauth2
 from ..database import get_db
+from app.ai import generate_workflow_documentation
 
 router = APIRouter(prefix="/workflows", tags=["Workflows"])
 
@@ -70,3 +73,45 @@ def delete_workflow(
         )
     db.delete(workflow)
     db.commit()
+
+
+@router.post("/{id}/generate-docs", status_code=status.HTTP_200_OK)
+def generate_docs(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(oauth2.get_current_user),
+):
+    # Fetch the workflow and verify ownership
+    workflow = (
+        db.query(models.Workflow)
+        .filter(models.Workflow.id == id, models.Workflow.owner_id == current_user.id)
+        .first()
+    )
+
+    if not workflow:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Workflow with id {id} not found",
+        )
+
+    # Generate documentation using Gemini
+    try:
+        documentation = generate_workflow_documentation(
+            title=str(workflow.title),
+            raw_input=str(workflow.raw_input),
+            input_type=str(workflow.input_type)
+        )
+         # Save generated docs back to DB
+        workflow.documentation = documentation  # type: ignore
+        db.commit()
+        db.refresh(workflow)
+
+        return {"documentation": documentation}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Documentation generation failed: {str(e)}"
+        )
+
+   
+
