@@ -57,7 +57,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: false
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/workflow-docs-api:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
