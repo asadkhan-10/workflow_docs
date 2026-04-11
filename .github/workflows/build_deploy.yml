@@ -57,7 +57,7 @@ jobs:
       - name: Run tests (placeholder)
         run: |
           echo "Tests will be added here (pytest)"
-          # pytest
+          pytest
 
   docker:
     runs-on: ubuntu-latest
