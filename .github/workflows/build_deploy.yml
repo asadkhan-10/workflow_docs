@@ -53,10 +53,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 🔒 Placeholder for future tests
-      - name: Run tests (placeholder)
+      - name: Create test database
+        env:
+          PGPASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         run: |
-          echo "Tests will be added here (pytest)"
+          psql -h localhost -U postgres -d workflow_docs -c "CREATE DATABASE workflow_docs_test;"
+
+      - name: Run tests
+        run: |
           pytest
 
   docker:
