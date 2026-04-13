@@ -93,7 +93,7 @@ workflow-docs-api/
 1. Clone the repo:
 
 ```bash
-git clone https://github.com/asadkhn10/workflow-docs-api.git
+git clone https://github.com/asadkhan-10/workflow_docs.git
 cd workflow-docs-api
 ```
 
