@@ -5,7 +5,7 @@ from .database import Base, engine
 from . import models
 from fastapi import FastAPI
 
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -17,5 +17,5 @@ app.include_router(auth.router)
 @app.get("/")
 def root():
     return {
-        "message": "hello from Workflow Docs API, and database connection successful"
+        "message": "hello from Workflow Docs API, and deployed succesfully on aws"
     }
