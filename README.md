@@ -2,7 +2,7 @@
 
 A REST API that generates technical documentation for automation workflows using AI. Users can submit n8n/Make.com workflow JSON or plain English descriptions and receive structured markdown documentation, including an overview, step-by-step breakdown, and failure point analysis.
 
-Live at: `http://3.110.219.116/`
+
 
 ---
 
@@ -184,4 +184,4 @@ push to main
 **Asad Khan**.
 
 - GitHub: [@asadkhn10](https://github.com/asadkhn10)
-- LinkedIn: [ww.linkedin.com/in/asad-ali-khan-connect101]
+- LinkedIn: [ww.linkedin.com/in/asadkhan10]
