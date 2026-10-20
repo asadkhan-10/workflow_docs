@@ -1,5 +1,4 @@
 # app/models.py
-from pydantic import constr
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey
 from sqlalchemy.sql.expression import text
 from .database import Base

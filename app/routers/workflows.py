@@ -1,5 +1,4 @@
 # app/routers/workflows.py
-from xxlimited import Str
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -94,7 +93,7 @@ def generate_docs(
             detail=f"Workflow with id {id} not found",
         )
 
-    # Generate documentation using Gemini
+    # Generate documentation using Groq
     try:
         documentation = generate_workflow_documentation(
             title=str(workflow.title),
