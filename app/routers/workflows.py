@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from .. import models, schemas, oauth2
 from ..database import get_db
 from app.ai import generate_workflow_documentation
+from app.ai import generate_workflow_documentation, DocumentationError
 
 router = APIRouter(prefix="/workflows", tags=["Workflows"])
 
@@ -106,10 +107,10 @@ def generate_docs(
         db.refresh(workflow)
 
         return {"documentation": documentation}
-    except Exception as e:
+    except DocumentationError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"Documentation generation failed: {str(e)}"
+            detail="Documentation generation is temporarily unavailable. Please try again later.",
         )
 
    
